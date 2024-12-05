@@ -18,12 +18,16 @@ function agregarTransaccion(tipo, monto) {
 
   const transaccion = { tipo, monto: parseFloat(monto) };
   transactions.push(transaccion);
+  alert(`Transacción agregada: ${tipo === 'ingreso' ? 'Ingreso' : 'Gasto'} de $${monto.toFixed(2)}`);
   actualizarHistorial();
 }
 
 // Función para actualizar historial de transacciones
 function actualizarHistorial() {
   transactionsList.innerHTML = '';
+  if (transactions.length === 0) {
+    transactionsList.innerHTML = '<li>No hay transacciones registradas.</li>';
+  }
   transactions.forEach(({ tipo, monto }) => {
     const li = document.createElement('li');
     li.textContent = `${tipo === 'ingreso' ? 'Ingreso' : 'Gasto'}: $${monto.toFixed(2)}`;
@@ -34,6 +38,11 @@ function actualizarHistorial() {
 
 // Ordenar transacciones por monto
 sortButton.addEventListener('click', () => {
+  if (transactions.length === 0) {
+    alert("No hay transacciones para ordenar.");
+    return;
+  }
+  
   transactions.sort((a, b) => (ascendingOrder ? a.monto - b.monto : b.monto - a.monto));
   ascendingOrder = !ascendingOrder;
   actualizarHistorial();
@@ -44,6 +53,11 @@ form.addEventListener('submit', (event) => {
   event.preventDefault();
   const monto = parseFloat(amountInput.value);
   const tipo = typeSelect.value;
+
+  if (isNaN(monto) || monto <= 0) {
+    alert("Por favor ingresa un monto válido.");
+    return;
+  }
 
   agregarTransaccion(tipo, monto);
 
