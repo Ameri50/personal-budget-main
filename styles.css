@@ -1,0 +1,86 @@
+/* Estilos generales */
+body {
+  font-family: Arial, sans-serif;
+  background: url('https://wallpapers.com/images/hd/monthly-budget-planning-s8lddi7lmku3x1y0.jpg') no-repeat center center fixed;
+  background-size: cover; /* Ajusta la imagen para cubrir toda la pantalla */
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 800px;
+  margin: auto;
+}
+
+h1 {
+  text-align: center;
+}
+
+.card {
+  background: white;
+  padding: 20px;
+  margin: 20px 0;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+button {
+  background: #4caf50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+button:hover {
+  background: #45a049;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.dark-mode {
+  background-color: #333;
+  color: white;
+}
+
+.dark-mode .card {
+  background: #444;
+}
+
+button#theme-toggle {
+  margin-top: 20px;
+}
+
+
+button:hover {
+  background-color: #2b09b3;
+}
+
+#transactions-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 10px;
+}
+
+#transactions-list li {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 5px;
+  display: flex;
+  justify-content: space-between;
+  background-color: #fff;
+}
