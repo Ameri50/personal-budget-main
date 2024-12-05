@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +9,24 @@
 <body>
   <div class="container">
     <h1>Mi Presupuesto Personal</h1>
+
+    <!-- Mensaje de la Fecha y Hora -->
+    <div class="datetime">
+      <p>Fecha y Hora Actual: <span id="datetime"></span></p>
+    </div>
+
+    <!-- Resumen del Presupuesto -->
+    <div class="summary">
+      <h2>Resumen del Presupuesto</h2>
+      <p><strong>Balance Actual:</strong> $<span id="balance">0</span></p>
+    </div>
+
+    <!-- Botón para cambiar el orden de las transacciones -->
+    <div class="sort-buttons">
+      <button id="sort-asc">Orden Ascendente</button>
+      <button id="sort-desc">Orden Descendente</button>
+    </div>
+
     <!-- Formulario para nueva transacción -->
     <div class="card">
       <h2>Nueva Transacción</h2>
@@ -23,29 +41,19 @@
         </select>
 
         <button type="submit">Agregar Transacción</button>
+        <p id="error-message" class="error-message"></p> <!-- Mensaje de error -->
       </form>
     </div>
 
-    <!-- Historial de transacciones -->
-    <div class="card">
+    <!-- Historial de Transacciones -->
+    <div class="transactions">
       <h2>Historial de Transacciones</h2>
-      <button id="sort-button">Ordenar por Monto</button>
-      <ul id="transactions-list"></ul>
+      <div id="transaction-list">
+        <!-- Aquí se mostrarán las transacciones -->
+      </div>
     </div>
-
-    <!-- Filtro de tipo de transacción -->
-<form>
-  <input type="radio" name="filter" value="todos" checked> Todos
-  <input type="radio" name="filter" value="ingreso"> Ingresos
-  <input type="radio" name="filter" value="gasto"> Gastos
-  <button type="button" id="filter-button">Filtrar</button>
-</form>
-
-<!-- Categoría de transacción -->
-<label for="category">Categoría:</label>
-<select id="category"></select>
-
   </div>
+
   <script src="app.js"></script>
 </body>
 </html>
