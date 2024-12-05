@@ -32,6 +32,19 @@
       <button id="sort-button">Ordenar por Monto</button>
       <ul id="transactions-list"></ul>
     </div>
+
+    <!-- Filtro de tipo de transacción -->
+<form>
+  <input type="radio" name="filter" value="todos" checked> Todos
+  <input type="radio" name="filter" value="ingreso"> Ingresos
+  <input type="radio" name="filter" value="gasto"> Gastos
+  <button type="button" id="filter-button">Filtrar</button>
+</form>
+
+<!-- Categoría de transacción -->
+<label for="category">Categoría:</label>
+<select id="category"></select>
+
   </div>
   <script src="app.js"></script>
 </body>
