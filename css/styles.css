@@ -41,6 +41,23 @@ header img {
     text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
 }
 
+/* Sección de Fecha y Hora */
+/* Estilo para la sección que muestra la fecha y la hora actual */
+.datetime {
+    background-color: #020d15;
+    color: white;
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Resumen, formulario y historial de transacciones */
+.summary, .card, .transactions {
+    margin-bottom: 20px;
+}  
+
+
 /* Estilo general para separar cada cuadro */
 .section-title {
     font-size: 1.8rem;

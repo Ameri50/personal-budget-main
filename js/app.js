@@ -15,6 +15,23 @@ document.addEventListener("DOMContentLoaded", () => {
     const transactionList = document.getElementById("transaction-list");
     const sortButton = document.getElementById("sort-transactions");
   
+    // Elemento para la fecha y hora
+    const datetimeElement = document.getElementById("datetime");
+  
+    // Función para actualizar la fecha y hora actual
+    function updateDateTime() {
+      const now = new Date();
+      const date = now.toLocaleDateString(); // Formato de fecha (dd/mm/yyyy)
+      const time = now.toLocaleTimeString(); // Formato de hora (hh:mm:ss)
+      datetimeElement.textContent = `${date} ${time}`;
+    }
+  
+    // Llamar a updateDateTime para actualizar la fecha y hora al cargar la página
+    updateDateTime();
+  
+    // Actualizar la fecha y hora cada segundo (1000 ms)
+    setInterval(updateDateTime, 1000);
+  
     // Añadir una transacción
     transactionForm.addEventListener("submit", (e) => {
       e.preventDefault();
@@ -33,20 +50,17 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   
     // Actualizar balance
-function updateBalance() {
-    balance = transactions.reduce((acc, transaction) => {
-      // Si la transacción es un ingreso, sumamos el monto; si es un gasto, lo restamos.
-      return transaction.type === "income" ? acc + transaction.amount : acc - transaction.amount;
-    }, 0);
+    function updateBalance() {
+      balance = transactions.reduce((acc, transaction) => {
+        return transaction.type === "income" ? acc + transaction.amount : acc - transaction.amount;
+      }, 0);
   
-    // Si el balance es negativo, lo ponemos a 0
-    if (balance < 0) {
-      balance = 0;
+      if (balance < 0) {
+        balance = 0;
+      }
+  
+      balanceElement.textContent = `$${balance.toFixed(2)}`;
     }
-  
-    // Actualiza el contenido del span con el id balance-amount con el valor calculado.
-    balanceElement.textContent = `$${balance.toFixed(2)}`;
-  }
   
     // Actualizar estadísticas
     function updateStatistics() {
@@ -57,9 +71,7 @@ function updateBalance() {
       avgExpense = expenseTransactions.reduce((acc, t) => acc + t.amount, 0) / expenseTransactions.length || 0;
   
       highestIncome = Math.max(...incomeTransactions.map(t => t.amount), 0);
-  
-      // Aquí se corrige el cálculo para el gasto más alto
-      highestExpense = Math.max(...expenseTransactions.map(t => t.amount), 0);  // Se cambia de Math.min a Math.max
+      highestExpense = Math.max(...expenseTransactions.map(t => t.amount), 0);
   
       avgIncomeElement.textContent = `Promedio de Ingresos: $${avgIncome.toFixed(2)}`;
       avgExpenseElement.textContent = `Promedio de Gastos: $${avgExpense.toFixed(2)}`;
