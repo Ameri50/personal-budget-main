@@ -1,59 +1,52 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mi Presupuesto Personal</title>
-  <link rel="stylesheet" href="estilos.css">
+  <title>Gestión de Finanzas</title>
+  <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-  <div class="container">
-    <h1>Mi Presupuesto Personal</h1>
-
-    <!-- Mensaje de la Fecha y Hora -->
-    <div class="datetime">
-      <p>Fecha y Hora Actual: <span id="datetime"></span></p>
-    </div>
-
-    <!-- Resumen del Presupuesto -->
-    <div class="summary">
-      <h2>Resumen del Presupuesto</h2>
-      <p><strong>Balance Actual:</strong> $<span id="balance">0</span></p>
-    </div>
-
-    <!-- Botón para cambiar el orden de las transacciones -->
-    <div class="sort-buttons">
-      <button id="sort-asc">Orden Ascendente</button>
-      <button id="sort-desc">Orden Descendente</button>
-    </div>
-
-    <!-- Formulario para nueva transacción -->
-    <div class="card">
-      <h2>Nueva Transacción</h2>
+  <header>
+    <h1>Gestión de Finanzas</h1>
+  </header>
+  
+  <main>
+    <!-- Sección para el balance total -->
+    <section class="balance-card">
+      <h2>Balance Total:</h2>
+      <p id="balance-amount" class="regular-balance">$0</p>
+    </section>
+    
+    <!-- Sección para las transacciones -->
+    <section>
+      <h2>Transacciones</h2>
+      <ul id="transaction-list">
+        <!-- Aquí se agregarán las transacciones dinámicamente -->
+      </ul>
+    </section>
+    
+    <!-- Sección para agregar una nueva transacción -->
+    <section>
+      <h2>Agregar Transacción</h2>
       <form id="transaction-form">
-        <label for="amount">Monto ($):</label>
-        <input type="number" id="amount" placeholder="Ingresa el monto" required>
-
-        <label for="type">Tipo:</label>
-        <select id="type">
-          <option value="ingreso">Ingreso</option>
-          <option value="gasto">Gasto</option>
+        <label for="transaction-type">Tipo:</label>
+        <select id="transaction-type" name="type" required>
+          <option value="income">Ingreso</option>
+          <option value="expense">Gasto</option>
         </select>
-
-        <button type="submit">Agregar Transacción</button>
-        <p id="error-message" class="error-message"></p> <!-- Mensaje de error -->
+        
+        <label for="transaction-amount">Monto:</label>
+        <input type="number" id="transaction-amount" name="amount" placeholder="Ejemplo: 500" required>
+        
+        <button type="submit">Agregar</button>
       </form>
-    </div>
+    </section>
+  </main>
 
-    <!-- Historial de Transacciones -->
-    <div class="transactions">
-      <h2>Historial de Transacciones</h2>
-      <div id="transaction-list">
-        <!-- Aquí se mostrarán las transacciones -->
-      </div>
-    </div>
-  </div>
-
-  <script src="app.js"></script>
+  <!-- Inclusión de los archivos JavaScript -->
+  <script src="js/utils.js" type="module"></script>
+  <script src="js/validators.js" type="module"></script>
+  <script src="js/app.js" type="module"></script>
 </body>
 </html>
