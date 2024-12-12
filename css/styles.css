@@ -1,5 +1,5 @@
 :root {
-    --color-primary: #4CAF50;
+    --color-primary: #144515;
     --color-secondary: #2196F3;
     --color-background: #f4f4f4;
     --color-text: #333;
@@ -15,6 +15,11 @@
 body {
     font-family: 'Arial', sans-serif;
     background-color: var(--color-background);
+    background-image: url('https://img.freepik.com/foto-gratis/vista-superior-mujer-trabajando-como-economista_23-2150062318.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     line-height: 1.6;
     color: var(--color-text);
 }
@@ -28,6 +33,23 @@ body {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+/* Sección de Fecha y Hora */
+/* Estilo para la sección que muestra la fecha y la hora actual */
+.datetime {
+    background-color: #020d15;
+    color: white;
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Resumen, formulario y historial de transacciones */
+.summary, .card, .transactions {
+    margin-bottom: 20px;
+}  
+
+
 h1 {
     text-align: center;
     margin-bottom: 1.5rem;
@@ -35,7 +57,7 @@ h1 {
 }
 
 .form-group {
-    margin-bottom: 1rem;
+    margin-bottom: 1rem;    
 }
 
 label {
@@ -69,7 +91,7 @@ button {
 }
 
 button:hover {
-    background-color: #45a049;
+    background-color: #180554;
 }
 
 .transactions-summary {
@@ -98,9 +120,24 @@ button:hover {
 }
 
 .transaction-income {
-    border-left: 4px solid green;
+    border-left: 4px solid rgb(18, 11, 165);
 }
 
 .transaction-expense {
-    border-left: 4px solid red;
+    border-left: 4px solid rgb(51, 8, 8);
+}
+
+.delete-transaction {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    margin-left: 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.delete-transaction:hover {
+    background-color: #ff3333;
 }
