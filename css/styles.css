@@ -1,194 +1,106 @@
-/* Estilo general */
-body {
-    font-family: 'Poppins', sans-serif;
+:root {
+    --color-primary: #4CAF50;
+    --color-secondary: #2196F3;
+    --color-background: #f4f4f4;
+    --color-text: #333;
+    --color-border: #e0e0e0;
+}
+
+* {
     margin: 0;
     padding: 0;
-    background: url('https://www.sydle.com/blog/assets/post/como-mejorar-la-gestion-financiera-613255b703a41c18994133c3/financial-management.jpg') no-repeat center center fixed;
-    background-size: cover; /* Asegura que la imagen se expanda y cubra todo */
-    color: #333;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    box-sizing: border-box;
 }
 
-/* Estilo del header */
-header {
-    width: 100%;
-    position: relative;
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: var(--color-background);
+    line-height: 1.6;
+    color: var(--color-text);
+}
+
+.container {
+    max-width: 600px;
+    margin: 2rem auto;
+    background-color: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
     text-align: center;
-    background-size: cover;
-    background-position: center center;
-    height: 300px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-header img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    opacity: 0.5;
-}
-
-.title {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 2.5rem;
-    color: #ffffff;
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
-}
-
-/* Sección de Fecha y Hora */
-/* Estilo para la sección que muestra la fecha y la hora actual */
-.datetime {
-    background-color: #020d15;
-    color: white;
-    padding: 10px;
-    border-radius: 8px;
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-/* Resumen, formulario y historial de transacciones */
-.summary, .card, .transactions {
-    margin-bottom: 20px;
-}  
-
-
-/* Estilo general para separar cada cuadro */
-.section-title {
-    font-size: 1.8rem;
     margin-bottom: 1.5rem;
-    color: #2b8e7d;
-    text-align: center;
+    color: var(--color-primary);
 }
 
-.balance-section, .date-time-section, .time-section, .transaction-section, .history-section {
-    background-color: #fafafa;
-    padding: 25px;
-    text-align: center;
-    margin-bottom: 30px;
-    border-radius: 12px;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+.form-group {
+    margin-bottom: 1rem;
 }
 
-.balance-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 10px 0;
-}
-
-.balance-container span {
-    font-size: 2.5em;
-    font-weight: 700;
-    color: #28a745;
-}
-
-.add-transaction-button, #toggle-form-button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 12px 25px;
-    border-radius: 25px;
-    cursor: pointer;
-    font-size: 1em;
-    transition: background-color 0.3s ease;
-    margin: 10px;
-}
-
-.add-transaction-button:hover, #toggle-form-button:hover {
-    background-color: #0056b3;
-}
-
-#transaction-form {
-    display: inline-block;
-    text-align: left;
-}
-
-#transaction-form label {
-    font-size: 1.1em;
-    margin-bottom: 8px;
-}
-
-#transaction-form input, #transaction-form select {
+label {
     display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+input, select {
     width: 100%;
-    margin-bottom: 15px;
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 1em;
+    padding: 0.75rem;
+    border: 2px solid var(--color-border);
+    border-radius: 5px;
     transition: border-color 0.3s ease;
 }
 
-#transaction-form input:focus, #transaction-form select:focus {
-    border-color: #007bff;
+input:focus, select:focus {
+    outline: none;
+    border-color: var(--color-primary);
 }
 
-.statistics-section {
-    background-color: white;
-    border-radius: var(--border-radius);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    margin: 20px;
-    padding: 20px;
-}
-
-.statistics-section p {
-    font-size: 1.2rem;
-    color: #333;
-}
-
-.add-button {
-    background-color: #28a745;
+button {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: var(--color-primary);
     color: white;
-    padding: 12px 25px;
     border: none;
-    border-radius: 25px;
+    border-radius: 5px;
     cursor: pointer;
-    font-size: 1.1em;
     transition: background-color 0.3s ease;
-    display: block;
-    margin: 0 auto;
 }
 
-.add-button:hover {
-    background-color: #218838;
+button:hover {
+    background-color: #45a049;
 }
 
-.transaction-list li {
-    background-color: #ffffff;
-    padding: 15px;
-    margin-bottom: 20px;
-    border-radius: 8px;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+.transactions-summary {
+    margin-top: 2rem;
+    border-top: 1px solid var(--color-border);
+    padding-top: 1rem;
+}
+
+.totals {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    max-width: 600px;
-    margin: 0 auto;
+    margin-bottom: 1rem;
 }
 
-.transaction-list li:hover {
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+#transactions-list {
+    list-style-type: none;
 }
 
-.sort-button {
-    background-color: #ffc107;
-    border: none;
-    padding: 12px 25px;
-    border-radius: 25px;
-    cursor: pointer;
-    font-size: 1em;
-    transition: background-color 0.3s ease;
-    display: block;
-    margin: 0 auto;
-    margin-top: 15px;
+#transactions-list li {
+    background-color: #f9f9f9;
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
 }
 
-.sort-button:hover {
-    background-color: #e0a800;
+.transaction-income {
+    border-left: 4px solid green;
+}
+
+.transaction-expense {
+    border-left: 4px solid red;
 }

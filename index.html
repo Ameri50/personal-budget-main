@@ -1,73 +1,70 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mi Cartera</title>
-  <link rel="stylesheet" href="css/styles.css"> <!-- Enlace al archivo CSS -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control de Presupuesto</title>
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-  <header class="header">
-    <img src="https://www.ceupe.com/images/easyblog_articles/2488/b2ap3_amp_gestin-financiera.jpg" alt="Gestión Financiera" class="header-img">
-    <h1 class="title">Mi Cartera</h1>
-  </header>
-  
-<!-- Mensaje de la Fecha y Hora -->
-<div class="datetime">
-    <p>Fecha y Hora Actual: <span id="datetime"></span></p>
-  </div>
-  
-  <main>
-    <section class="balance-section box">
-      <h2 class="section-title">Balance Total</h2>
-      <div class="balance-container">
-        <span id="balance-amount">0.00</span> <!-- Aquí se actualizará el balance -->
-        <p id="error-message" style="color: red; display: none;">El monto debe ser un número positivo.</p>
-        <button class="add-transaction-button" id="add-transaction">+</button>
-        <button id="toggle-form-button">Nueva Transacción</button>
-      </div>
-    </section>
-
-    
-  
-    <!-- Estadísticas -->
-    <section class="statistics-section box">
-      <h2 class="section-title">Estadísticas</h2>
-      <p id="avg-income">Promedio de Ingresos: $0.00</p>
-      <p id="avg-expense">Promedio de Gastos: $0.00</p>
-      <p id="highest-income">Ingreso más alto: $0.00</p>
-      <p id="highest-expense">Gasto más alto: $0.00</p>
-    </section>
-  
-    <section class="transaction-section box">
-      <h2 class="section-title">Nueva Transacción</h2>
-      <form id="transaction-form">
-        <label for="amount">Monto($):</label>
-        <input type="number" id="amount" placeholder="Ingrese el monto" required>
+    <div class="container">
+        <h1>Control de Presupuesto</h1>
         
-        <label for="type">Tipo:</label>
-        <select id="type" required>
-          <option value="income">Ingreso</option>
-          <option value="expense">Gasto</option>
-        </select>
-        
-        <button type="submit" class="add-button">Agregar Transacción</button>
-      </form>
-    </section>
-  
-    <section class="history-section box">
-      <h2 class="section-title">Historial</h2>
-      <button class="sort-button" id="sort-transactions">Ordenar por Monto</button>
-      <ul class="transaction-list" id="transaction-list">
-        <!-- Las transacciones se agregarán dinámicamente aquí -->
-      </ul>
-    </section>
-  </main>
+        <form id="transaction-form">
+            <div class="form-group">
+                <label for="description">Descripción</label>
+                <input type="text" id="description" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="amount">Monto</label>
+                <input type="number" id="amount" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="type">Tipo</label>
+                <select id="type">
+                    <option value="ingreso">Ingreso</option>
+                    <option value="gasto">Gasto</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="category">Categoría</label>
+                <select id="category" required>
+                    <option value="" disabled selected>Elige una categoría</option>
+                    <optgroup label="Ingresos">
+                        <option value="Salario">Salario</option>
+                        <option value="Ventas">Ventas</option>
+                        <option value="Otros Ingresos">Otros Ingresos</option>
+                    </optgroup>
+                    <optgroup label="Gastos">
+                        <option value="Alimentación">Alimentación</option>
+                        <option value="Transporte">Transporte</option>
+                        <option value="Servicios">Servicios</option>
+                        <option value="Otros Gastos">Otros Gastos</option>
+                    </optgroup>
+                </select>
+            </div>
+            
+            <button type="submit">Agregar Transacción</button>
+        </form>
 
-  <script type="module" src="js/app.js"></script>
-  <script type="module" src="js/utils.js"></script>
-  <script type="module" src="js/validators.js"></script>
-  <script type="module" src="js/date-time.js"></script> <!-- Nuevo archivo de fecha y hora -->
-  <script type="module" src="js/historial.js"></script>
+        <div class="transactions-summary">
+            <h2>Resumen de Transacciones</h2>
+            <div class="totals">
+                <p>Total Ingresos: <span id="total-ingresos">$0.00</span></p>
+                <p>Total Gastos: <span id="total-gastos">$0.00</span></p>
+                <p>Balance: <span id="balance">$0.00</span></p>
+            </div>
+            <ul id="transactions-list"></ul>
+        </div>
+    </div>
+
+    <script src="utils.js"></script>
+    <script src="validators.js"></script>
+    <script src="Transaction.js"></script>
+    <script src="Budget.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
