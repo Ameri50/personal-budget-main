@@ -3,133 +3,168 @@ let totalIngresos = 0;
 let totalGastos = 0;
 const transactions = [];
 
-// Elemento para la fecha y hora
+// Elementos del DOM
 const datetimeElement = document.getElementById("datetime");
+const transactionForm = document.getElementById("transaction-form");
+const deleteAllButton = document.getElementById("delete-all-transactions");
+const transactionsTableBody = document.querySelector("#transactions-table tbody");
+const ingresosElement = document.getElementById("total-ingresos");
+const gastosElement = document.getElementById("total-gastos");
+const balanceElement = document.getElementById("balance");
+const ctx = document.getElementById("budgetChart").getContext("2d");
 
-// Función para actualizar la fecha y hora actual
-function updateDateTime() {
-    const now = new Date();
-    const date = now.toLocaleDateString(); // Formato de fecha (dd/mm/yyyy)
-    const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }; // Formato de 24 horas
-    const time = now.toLocaleTimeString([], timeOptions); // Obtener la hora en formato de 24 horas
-    datetimeElement.textContent = `${date} ${time}`;
+// Inicializar el gráfico
+let budgetChart;
+
+function initializeChart() {
+    budgetChart = new Chart(ctx, {
+        type: "doughnut",
+        data: {
+            labels: ["Ingresos", "Gastos"],
+            datasets: [
+                {
+                    data: [0, 0],
+                    backgroundColor: ["#4caf50", "#f44336"],
+                },
+            ],
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: "top",
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function (context) {
+                            const label = context.label || "";
+                            const value = context.raw || 0;
+                            return `${label}: $${value.toFixed(2)}`;
+                        },
+                    },
+                },
+            },
+        },
+    });
 }
 
-// Actualizar la fecha y hora cada segundo (1000 ms)
+// Actualizar los datos del gráfico
+function updateChart() {
+    budgetChart.data.datasets[0].data = [totalIngresos, totalGastos];
+    budgetChart.update();
+}
+
+// Función para actualizar la fecha y hora
+function updateDateTime() {
+    const now = new Date();
+    const date = now.toLocaleDateString();
+    const time = now.toLocaleTimeString();
+    datetimeElement.textContent = `${date} ${time}`;
+}
 setInterval(updateDateTime, 1000);
 
 // Función para agregar una transacción
 function addTransaction(event) {
     event.preventDefault();
 
-    const description = document.getElementById('description').value;
-    const amount = parseFloat(document.getElementById('amount').value);
-    const type = document.getElementById('type').value;
-    const category = document.getElementById('category').value;
+    const description = document.getElementById("description").value;
+    const amount = parseFloat(document.getElementById("amount").value);
+    const type = document.getElementById("type").value;
+    const category = document.getElementById("category").value;
 
-    const date = new Date().toLocaleString();
+    if (!description || isNaN(amount) || !category) {
+        alert("Por favor, completa todos los campos.");
+        return;
+    }
 
     const transaction = {
-        id: Date.now(), // Usar timestamp como ID único
+        id: Date.now(),
         description,
         amount,
         type,
         category,
-        date // Incluir fecha en la transacción
+        date: new Date().toLocaleString(),
     };
 
     transactions.push(transaction);
-    localStorage.setItem('transactions', JSON.stringify(transactions));
+    localStorage.setItem("transactions", JSON.stringify(transactions));
 
-    updateTransactionsList();
     updateSummary();
-
-    event.target.reset(); // Limpiar formulario
+    updateTransactionsTable();
+    transactionForm.reset();
 }
 
-// Función para actualizar la interfaz de usuario
-function updateUI() {
-    document.getElementById('total-ingresos').innerText = `$${totalIngresos.toFixed(2)}`;
-    document.getElementById('total-gastos').innerText = `$${totalGastos.toFixed(2)}`;
-    document.getElementById('balance').innerText = `$${(totalIngresos - totalGastos).toFixed(2)}`;
-}
-
-// Función para actualizar el resumen de transacciones
+// Función para actualizar el resumen
 function updateSummary() {
     totalIngresos = transactions
-        .filter(t => t.type === 'ingreso')
+        .filter((t) => t.type === "ingreso")
         .reduce((acc, t) => acc + t.amount, 0);
-
     totalGastos = transactions
-        .filter(t => t.type === 'gasto')
+        .filter((t) => t.type === "gasto")
         .reduce((acc, t) => acc + t.amount, 0);
 
-    updateUI();
+    const balance = totalIngresos - totalGastos;
+
+    ingresosElement.textContent = `$${totalIngresos.toFixed(2)}`;
+    gastosElement.textContent = `$${totalGastos.toFixed(2)}`;
+    balanceElement.textContent = `$${balance.toFixed(2)}`;
+
+    updateChart(); // Actualizar el gráfico
 }
 
-// Cargar transacciones desde localStorage al iniciar
-function loadTransactions() {
-    const storedTransactions = localStorage.getItem('transactions');
-    if (storedTransactions) {
-        transactions.push(...JSON.parse(storedTransactions));
-        updateSummary();
-        updateTransactionsList();
-    }
-}
+// Función para actualizar la tabla de transacciones
+function updateTransactionsTable() {
+    transactionsTableBody.innerHTML = ""; // Limpiar la tabla
 
-// Crear un elemento de transacción
-function createTransactionElement(transaction) {
-    const li = document.createElement('li');
-    li.innerText = `${transaction.description} - $${transaction.amount.toFixed(2)} (${transaction.type} - ${transaction.category})`;
-
-    const dateSpan = document.createElement('span');
-    dateSpan.innerText = ` [${transaction.date}]`; // Mostrar la fecha
-    dateSpan.style.fontStyle = 'italic'; // Estilo opcional
-    li.appendChild(dateSpan);
-
-    // Crear botón de eliminación
-    const deleteButton = document.createElement('button');
-    deleteButton.innerText = 'Eliminar';
-    deleteButton.onclick = () => deleteTransaction(transaction.id); // Asociar la función de eliminación
-    deleteButton.style.marginLeft = '10px'; // Espacio entre el texto y el botón
-    li.appendChild(deleteButton);
-
-    return li;
+    transactions.forEach((transaction) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${transaction.description}</td>
+            <td>$${transaction.amount.toFixed(2)}</td>
+            <td>${transaction.type}</td>
+            <td>${transaction.category}</td>
+            <td>
+                <button class="delete-btn" onclick="deleteTransaction(${transaction.id})">Eliminar</button>
+            </td>
+        `;
+        transactionsTableBody.appendChild(row);
+    });
 }
 
 // Función para eliminar una transacción
 function deleteTransaction(transactionId) {
-    const filteredTransactions = transactions.filter(t => t.id !== transactionId);
-    transactions.length = 0; // Vaciar el array de transacciones
-    transactions.push(...filteredTransactions); // Rellenar con las transacciones restantes
-
-    localStorage.setItem('transactions', JSON.stringify(transactions));
-
-    updateSummary();
-    updateTransactionsList();
+    const index = transactions.findIndex((t) => t.id === transactionId);
+    if (index !== -1) {
+        transactions.splice(index, 1);
+        localStorage.setItem("transactions", JSON.stringify(transactions));
+        updateSummary();
+        updateTransactionsTable();
+    }
 }
-
-// Función para actualizar la lista de transacciones
-function updateTransactionsList() {
-    const transactionsList = document.getElementById('transactions-list');
-    transactionsList.innerHTML = ''; // Limpiar lista actual
-
-    transactions.forEach(transaction => {
-        const transactionElement = createTransactionElement(transaction);
-        transactionsList.appendChild(transactionElement);
-    });
-}
-
-// Evento de envío del formulario
-document.getElementById('transaction-form').addEventListener('submit', addTransaction);
 
 // Evento para eliminar todas las transacciones
-document.getElementById('delete-all-transactions').addEventListener('click', () => {
-    transactions.length = 0; // Vaciar el array de transacciones
-    localStorage.removeItem('transactions'); // Eliminar del localStorage
-    updateSummary(); // Actualizar resumen
-    updateTransactionsList(); // Actualizar lista
+deleteAllButton.addEventListener("click", () => {
+    transactions.length = 0;
+    localStorage.removeItem("transactions");
+    updateSummary();
+    updateTransactionsTable();
 });
+
+// Función para cargar transacciones desde localStorage
+function loadTransactions() {
+    const storedTransactions = localStorage.getItem("transactions");
+    if (storedTransactions) {
+        transactions.push(...JSON.parse(storedTransactions));
+        updateSummary();
+        updateTransactionsTable();
+    }
+}
+
+// Inicialización
+transactionForm.addEventListener("submit", addTransaction);
+initializeChart();
+loadTransactions();
+
 
 // Cargar transacciones al iniciar
 loadTransactions();

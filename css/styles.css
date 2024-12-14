@@ -141,3 +141,45 @@ button:hover {
 .delete-transaction:hover {
     background-color: #ff3333;
 }
+
+/* Estilo para la tabla */
+#transactions-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-family: Arial, sans-serif;
+}
+
+#transactions-table th, #transactions-table td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
+}
+
+#transactions-table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+#transactions-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+#transactions-table tr:hover {
+    background-color: #e0f7fa;
+    cursor: pointer;
+}
+
+/* Botón de acciones */
+#transactions-table .delete-btn {
+    background-color: #ff4d4d;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+#transactions-table .delete-btn:hover {
+    background-color: #ff1a1a;
+}
