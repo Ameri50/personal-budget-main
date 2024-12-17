@@ -1,188 +1,143 @@
-// Variables globales
-let totalIngresos = 0;
-let totalGastos = 0;
-const transactions = [];
-
-// Elemento para la fecha y hora
-const datetimeElement = document.getElementById("datetime");
-
-// Función para actualizar la fecha y hora actual
-function updateDateTime() {
-    const now = new Date();
-    const date = now.toLocaleDateString(); // Formato de fecha (dd/mm/yyyy)
-    const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }; // Formato de 24 horas
-    const time = now.toLocaleTimeString([], timeOptions); // Obtener la hora en formato de 24 horas
-    datetimeElement.textContent = `${date} ${time}`;
-}
-
-// Actualizar la fecha y hora cada segundo (1000 ms)
-setInterval(updateDateTime, 1000);
-
-// Función para calcular el balance
-function calculateBalance() {
-  return totalIngresos - totalGastos;
-}
-
-// Función para obtener el total de ingresos
-function getTotalIngresos() {
-  return totalIngresos;
-}
-
-// Función para obtener el total de gastos
-function getTotalGastos() {
-  return totalGastos;
-}
-
-// Actualizar el balance al iniciar la aplicación
-function initializeBudget() {
-  document.getElementById('total-ingresos').innerText = `$${totalIngresos.toFixed(2)}`;
-  document.getElementById('total-gastos').innerText = `$${totalGastos.toFixed(2)}`;
-  document.getElementById('balance').innerText = `$${calculateBalance().toFixed(2)}`;
-}
-
-// Función para agregar una transacción
-function addTransaction(event) {
-    event.preventDefault();
-
-    const description = document.getElementById('description').value;
-    const amount = parseFloat(document.getElementById('amount').value);
-    const type = document.getElementById('type').value;
-    const category = document.getElementById('category').value;
-
-    const date = new Date().toLocaleString();
-
-    const transaction = {
-        id: Date.now(), // Usar timestamp como ID único
-        description,
-        amount,
-        type,
-        category,
-        date // Incluir fecha en la transacción
-    };
-
-    transactions.push(transaction);
-    localStorage.setItem('transactions', JSON.stringify(transactions));
-
-    updateTransactionsList();
-    updateSummary();
-    updateBudgetChart(); // Actualizar gráfico después de agregar transacción
-
-    event.target.reset(); // Limpiar formulario
-}
-
-// Función para actualizar la interfaz de usuario
-function updateUI() {
-    document.getElementById('total-ingresos').innerText = `$${totalIngresos.toFixed(2)}`;
-    document.getElementById('total-gastos').innerText = `$${totalGastos.toFixed(2)}`;
-    document.getElementById('balance').innerText = `$${(totalIngresos - totalGastos).toFixed(2)}`;
-}
-
-// Función para actualizar el resumen de transacciones
-function updateSummary() {
-    totalIngresos = transactions
-        .filter(t => t.type === 'ingreso')
-        .reduce((acc, t) => acc + t.amount, 0);
-
-    totalGastos = transactions
-        .filter(t => t.type === 'gasto')
-        .reduce((acc, t) => acc + t.amount, 0);
-
-    updateUI();
-}
-
-// Cargar transacciones desde localStorage al iniciar
-function loadTransactions() {
-    const storedTransactions = localStorage.getItem('transactions');
-    if (storedTransactions) {
-        transactions.push(...JSON.parse(storedTransactions));
-        updateSummary();
-        updateTransactionsList();
-    }
-}
-
-// Crear un elemento de transacción
-function createTransactionElement(transaction) {
-    const li = document.createElement('li');
-    li.innerText = `${transaction.description} - $${transaction.amount.toFixed(2)} (${transaction.type} - ${transaction.category})`;
-
-    const dateSpan = document.createElement('span');
-    dateSpan.innerText = ` [${transaction.date}]`; // Mostrar la fecha
-    dateSpan.style.fontStyle = 'italic'; // Estilo opcional
-    li.appendChild(dateSpan);
-
-    // Crear botón de eliminación
-    const deleteButton = document.createElement('button');
-    deleteButton.innerText = 'Eliminar';
-    deleteButton.onclick = () => deleteTransaction(transaction.id); // Asociar la función de eliminación
-    deleteButton.style.marginLeft = '10px'; // Espacio entre el texto y el botón
-    li.appendChild(deleteButton);
-
-    return li;
-}
-
-// Función para eliminar una transacción
-function deleteTransaction(transactionId) {
-    const filteredTransactions = transactions.filter(t => t.id !== transactionId);
-    transactions.length = 0; // Vaciar el array de transacciones
-    transactions.push(...filteredTransactions); // Rellenar con las transacciones restantes
-
-    localStorage.setItem('transactions', JSON.stringify(transactions));
-
-    updateSummary();
-    updateTransactionsList();
-    updateBudgetChart(); // Actualizar gráfico después de eliminar transacción
-}
-
-// Función para actualizar la lista de transacciones
-function updateTransactionsList() {
-  const transactionsList = document.getElementById('transactions-list');
-  transactionsList.innerHTML = ''; // Limpiar lista actual
-
-  transactions.forEach(transaction => {
-      const transactionElement = createTransactionElement(transaction);
-      transactionsList.appendChild(transactionElement);
-  });
-}
+// Inicializar el gráfico globalmente
+let budgetChart = null;
 
 // Función para actualizar el gráfico de presupuesto
-function updateBudgetChart() {
+function updateBudgetChart(ingresos, gastos) {
     const ctx = document.getElementById('budgetChart').getContext('2d');
-
-    // Obtener datos de ingresos y gastos
-    const ingresos = getTotalIngresos();
-    const gastos = getTotalGastos();
-
-    // Crear gráfico circular
-    const budgetChart = new Chart(ctx, {
-        type: 'doughnut',
+    
+    // Si el gráfico ya está creado, lo destruimos y lo recreamos
+    if (budgetChart) {
+        budgetChart.destroy();
+    }
+    
+    // Crear un nuevo gráfico
+    budgetChart = new Chart(ctx, {
+        type: 'pie', // Tipo de gráfico
         data: {
             labels: ['Ingresos', 'Gastos'],
             datasets: [{
-                data: [ingresos, gastos],
-                backgroundColor: ['#4CAF50', '#F44336'],
+                label: 'Presupuesto',
+                data: [ingresos, gastos], // Los datos que se mostrarán en el gráfico
+                backgroundColor: ['#4CAF50', '#F44336'], // Colores para Ingresos y Gastos
+                borderColor: ['#388E3C', '#D32F2F'], // Colores del borde
                 borderWidth: 1
             }]
         },
         options: {
             responsive: true,
-            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'top'
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(tooltipItem) {
+                            return tooltipItem.label + ': $' + tooltipItem.raw.toFixed(2); // Formato de los valores
+                        }
+                    }
+                }
+            }
         }
     });
 }
 
-// Evento de envío del formulario
-document.getElementById('transaction-form').addEventListener('submit', addTransaction);
+// Función para actualizar la tabla de transacciones
+function updateTransactionsTable() {
+    const transactionsTableBody = document.querySelector("#transactions-table tbody");
+    transactionsTableBody.innerHTML = ""; // Limpiar la tabla
 
-// Evento para eliminar todas las transacciones
-document.getElementById('delete-all-transactions').addEventListener('click', () => {
-    transactions.length = 0; // Vaciar el array de transacciones
-    localStorage.removeItem('transactions'); // Eliminar del localStorage
-    updateSummary(); // Actualizar resumen
-    updateTransactionsList(); // Actualizar lista
-    updateBudgetChart(); // Actualizar gráfico después de eliminar todas las transacciones
+    transactions.forEach(transaction => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${transaction.description}</td>
+            <td>$${transaction.amount.toFixed(2)}</td>
+            <td>${transaction.type}</td>
+            <td>${transaction.category}</td>
+            <td>${transaction.date}</td>
+            <td>
+                <button onclick="deleteTransactionById(${transaction.id})" class="delete-button">Eliminar</button>
+            </td>
+        `;
+        transactionsTableBody.appendChild(row);
+    });
+}
+
+// Función para actualizar el resumen de ingresos, gastos y balance
+function updateSummary() {
+    // Filtra las transacciones para obtener los ingresos y gastos
+    const totalIngresos = transactions.filter(t => t.type === 'ingreso').reduce((sum, t) => sum + t.amount, 0);
+    const totalGastos = transactions.filter(t => t.type === 'gasto').reduce((sum, t) => sum + t.amount, 0);
+
+    // Actualiza el resumen de los valores
+    document.getElementById('total-ingresos').textContent = `$${totalIngresos.toFixed(2)}`;
+    document.getElementById('total-gastos').textContent = `$${totalGastos.toFixed(2)}`;
+    document.getElementById('balance').textContent = `$${(totalIngresos - totalGastos).toFixed(2)}`;
+    
+    // Actualiza el gráfico con los nuevos valores
+    updateBudgetChart(totalIngresos, totalGastos);
+
+    // Actualiza la tabla de transacciones
+    updateTransactionsTable();
+}
+
+// Función para cargar transacciones desde localStorage y actualizar la vista
+function loadTransactions() {
+    const storedTransactions = localStorage.getItem("transactions");
+    transactions = storedTransactions ? JSON.parse(storedTransactions) : [];
+    updateSummary(); // Actualiza el resumen y el gráfico con las transacciones cargadas
+}
+
+// Función para agregar una nueva transacción
+function addTransaction(event) {
+    event.preventDefault();
+
+    const description = document.getElementById("description").value;
+    const amount = parseFloat(document.getElementById("amount").value);
+    const type = document.getElementById("type").value;
+    const category = document.getElementById("category").value;
+
+    if (!description || isNaN(amount) || !category) {
+        alert("Por favor, completa todos los campos.");
+        return;
+    }
+
+    const transaction = {
+        id: Date.now(),
+        description,
+        amount,
+        type,
+        category,
+        date: new Date().toLocaleString(),
+    };
+
+    transactions.push(transaction);
+    localStorage.setItem("transactions", JSON.stringify(transactions));
+
+    updateSummary(); // Actualiza la vista inmediatamente después de agregar la transacción
+    transactionForm.reset();
+}
+
+// Eliminar una transacción individual
+function deleteTransactionById(transactionId) {
+    if (confirm("¿Estás seguro de que quieres eliminar esta transacción?")) {
+        transactions = transactions.filter(transaction => transaction.id !== transactionId);
+        localStorage.setItem("transactions", JSON.stringify(transactions));
+        updateSummary(); // Actualiza la vista inmediatamente después de eliminar la transacción
+    }
+}
+
+// Eliminar todas las transacciones
+const deleteAllButton = document.getElementById("delete-all-button");
+deleteAllButton.addEventListener("click", function () {
+    if (confirm("¿Estás seguro de que quieres eliminar todas las transacciones?")) {
+        transactions = [];
+        localStorage.removeItem("transactions");
+        updateSummary(); // Actualiza la vista inmediatamente después de eliminar todas las transacciones
+    }
 });
 
-// Cargar transacciones al iniciar
-loadTransactions();
-initializeBudget(); // Iniciar el balance con los datos guardados
-updateBudgetChart(); // Inicializar el gráfico al cargar la página
+// Inicialización y carga de transacciones
+document.addEventListener("DOMContentLoaded", () => {
+    loadTransactions(); // Carga las transacciones del localStorage y actualiza la vista
+    transactionForm.addEventListener("submit", addTransaction); // Añade la transacción al enviar el formulario
+});
