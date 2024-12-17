@@ -5,6 +5,7 @@
     --color-background: #f4f4f4;
     --color-text: #333;
     --color-border: #e0e0e0;
+    --color-warning: #ff9800;
 }
 
 /* Estilos generales */
@@ -40,6 +41,7 @@ body {
     background-color: rgba(255, 255, 255, 0.9);
     border-radius: 12px;
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
 }
 
 /* Cuadros de las secciones */
@@ -49,6 +51,7 @@ body {
     padding: 25px;
     margin-bottom: 30px;
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    overflow-x: auto;
 }
 
 /* Estilo para el cuadro de fecha y hora */
@@ -95,9 +98,11 @@ body {
     width: 100%;
     padding: 12px;
     margin-top: 8px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--color-border);
     border-radius: 6px;
     font-size: 16px;
+    background-color: #ffffff;
+    color: var(--color-text);
 }
 
 button {
@@ -105,12 +110,32 @@ button {
     color: white;
     border: none;
     border-radius: 4px;
-    padding: 5px 10px;
+    padding: 10px 20px;
     cursor: pointer;
+    transition: all 0.3s ease;
 }
 
 button:hover {
     background-color: #d32f2f;
+    transform: scale(1.05);
+}
+
+/* Mensajes de advertencia o éxito */
+.alert {
+    margin: 20px 0;
+    padding: 15px;
+    border-radius: 6px;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+}
+
+.alert-warning {
+    background-color: var(--color-warning);
+}
+
+.alert-success {
+    background-color: var(--color-primary);
 }
 
 /* Resumen de los totales */
@@ -133,11 +158,20 @@ table {
 table th, table td {
     padding: 15px;
     text-align: left;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid var(--color-border);
 }
 
 table th {
     background-color: #f4f4f4;
+    font-size: 18px;
+}
+
+table tbody:empty::before {
+    content: "No hay transacciones registradas.";
+    display: block;
+    text-align: center;
+    color: var(--color-warning);
+    padding: 20px;
     font-size: 18px;
 }
 
@@ -156,6 +190,19 @@ table th {
 
 #delete-all-transactions:hover {
     background-color: #e53935;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Gráfico de presupuesto */
+.chart-container {
+    max-width: 600px;
+    margin: 20px auto;
+    text-align: center;
+}
+
+#budgetChart {
+    width: 100%;
+    height: 400px;
 }
 
 /* Asegurar que las secciones no se desborden */
@@ -165,17 +212,7 @@ table th {
 .transactions-list-container {
     max-width: 100%;
     margin: 0 auto;
-}
-
-/* Gráfico de presupuesto */
-.chart-container {
-    max-width: 600px; /* Ajustado para mejor visualización en pantallas más grandes */
-    margin: 20px auto;
-}
-
-#budgetChart {
-    width: 100%;
-    height: 400px;
+    overflow-x: auto;
 }
 
 /* Responsive */
@@ -200,5 +237,9 @@ table th {
     .datetime-box p,
     .datetime-box span {
         font-size: 18px;
+    }
+
+    .chart-container {
+        max-width: 100%;
     }
 }

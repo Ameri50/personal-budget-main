@@ -14,64 +14,71 @@ const chartContainer = document.getElementById("budgetChart"); // Contenedor del
 // Inicializar el gráfico con ApexCharts
 let budgetChart;
 function initializeChart() {
-    budgetChart = new ApexCharts(chartContainer, {
-        chart: {
-            type: "donut", // Tipo de gráfico donut
-            height: 350
-        },
-        series: [totalIngresos, totalGastos], // Datos iniciales (pueden ser 0 al principio)
-        labels: ["Ingresos", "Gastos"],
-        colors: ['#4caf50', '#f44336'], // Colores para Ingresos y Gastos
-        tooltip: {
-            y: {
-                formatter: function (val) {
-                    return "$" + val.toFixed(2); // Formato de tooltip
+    try {
+        budgetChart = new ApexCharts(chartContainer, {
+            chart: {
+                type: "donut", // Tipo de gráfico donut
+                height: 350
+            },
+            series: [totalIngresos, totalGastos], // Datos iniciales (pueden ser 0 al principio)
+            labels: ["Ingresos", "Gastos"],
+            colors: ['#4caf50', '#f44336'], // Colores para Ingresos y Gastos
+            tooltip: {
+                y: {
+                    formatter: function (val) {
+                        return "$" + val.toFixed(2); // Formato de tooltip
+                    }
                 }
-            }
-        },
-        responsive: [{
-            breakpoint: 480,
-            options: {
-                chart: {
-                    width: "100%"
-                },
-                legend: {
-                    position: "bottom"
+            },
+            responsive: [{
+                breakpoint: 480,
+                options: {
+                    chart: {
+                        width: "100%"
+                    },
+                    legend: {
+                        position: "bottom"
+                    }
                 }
-            }
-        }]
-    });
-
-    budgetChart.render(); // Renderiza el gráfico
+            }]
+        });
+        budgetChart.render(); // Renderiza el gráfico
+    } catch (error) {
+        console.error("Error inicializando el gráfico:", error);
+    }
 }
 
 // Actualizar gráfico con los nuevos datos
 function updateChart() {
-    budgetChart.updateOptions({
-        series: [totalIngresos, totalGastos] // Actualiza los valores del gráfico
-    });
+    if (budgetChart) {
+        budgetChart.updateOptions({
+            series: [totalIngresos, totalGastos] // Actualiza los valores del gráfico
+        });
+    }
 }
 
-// Actualizar fecha y hora
+// Validar y actualizar fecha y hora
 function updateDateTime() {
-    const now = new Date();
-    const date = now.toLocaleDateString();
-    const time = now.toLocaleTimeString();
-    datetimeElement.textContent = `${date} ${time}`;
+    if (datetimeElement) {
+        const now = new Date();
+        const date = now.toLocaleDateString();
+        const time = now.toLocaleTimeString();
+        datetimeElement.textContent = `${date} ${time}`;
+    }
 }
 setInterval(updateDateTime, 1000);
 
-// Agregar transacción
+// Validar y agregar transacción
 function addTransaction(event) {
     event.preventDefault();
 
-    const description = document.getElementById("description").value;
+    const description = document.getElementById("description").value.trim();
     const amount = parseFloat(document.getElementById("amount").value);
     const type = document.getElementById("type").value;
     const category = document.getElementById("category").value;
 
-    if (!description || isNaN(amount) || !category) {
-        alert("Por favor, completa todos los campos.");
+    if (!description || isNaN(amount) || amount <= 0 || !category) {
+        alert("Por favor, completa todos los campos correctamente.");
         return;
     }
 
@@ -101,7 +108,7 @@ function deleteTransactionById(transactionId) {
 }
 
 // Eliminar todas las transacciones
-deleteAllButton.addEventListener("click", function () {
+deleteAllButton?.addEventListener("click", function () {
     if (confirm("¿Estás seguro de que quieres eliminar todas las transacciones?")) {
         transactions = [];
         localStorage.removeItem("transactions");
@@ -109,10 +116,15 @@ deleteAllButton.addEventListener("click", function () {
     }
 });
 
-// Actualizar resumen y gráfico
-function updateSummary() {
+// Calcular totales de transacciones
+function calculateTotals() {
     totalIngresos = transactions.filter(t => t.type === 'ingreso').reduce((acc, t) => acc + t.amount, 0);
     totalGastos = transactions.filter(t => t.type === 'gasto').reduce((acc, t) => acc + t.amount, 0);
+}
+
+// Actualizar resumen y gráfico
+function updateSummary() {
+    calculateTotals();
     const balance = totalIngresos - totalGastos;
 
     ingresosElement.textContent = `$${totalIngresos.toFixed(2)}`;
@@ -126,20 +138,26 @@ function updateSummary() {
 function updateTransactionsTable() {
     transactionsTableBody.innerHTML = ""; // Limpiar tabla
 
-    transactions.forEach(transaction => {
-        const row = document.createElement("tr");
-        row.innerHTML = `
-            <td>${transaction.description}</td>
-            <td>$${transaction.amount.toFixed(2)}</td>
-            <td>${transaction.type}</td>
-            <td>${transaction.category}</td>
-            <td>${transaction.date}</td>
-            <td>
-                <button class="delete-btn" data-id="${transaction.id}">Eliminar</button>
-            </td>
-        `;
-        transactionsTableBody.appendChild(row);
-    });
+    if (transactions.length === 0) {
+        const emptyRow = document.createElement("tr");
+        emptyRow.innerHTML = `<td colspan="6" style="text-align: center;">No hay transacciones registradas.</td>`;
+        transactionsTableBody.appendChild(emptyRow);
+    } else {
+        transactions.forEach(transaction => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td>${transaction.description}</td>
+                <td>$${transaction.amount.toFixed(2)}</td>
+                <td>${transaction.type}</td>
+                <td>${transaction.category}</td>
+                <td>${transaction.date}</td>
+                <td>
+                    <button class="delete-btn" data-id="${transaction.id}">Eliminar</button>
+                </td>
+            `;
+            transactionsTableBody.appendChild(row);
+        });
+    }
 }
 
 // Actualizar toda la vista (resumen, tabla, gráfico)
@@ -148,15 +166,21 @@ function updateView() {
     updateSummary();
 }
 
-// Cargar transacciones desde localStorage
+// Cargar transacciones desde localStorage con validación
 function loadTransactions() {
-    const storedTransactions = localStorage.getItem("transactions");
-    transactions = storedTransactions ? JSON.parse(storedTransactions) : [];
+    try {
+        const storedTransactions = localStorage.getItem("transactions");
+        transactions = storedTransactions ? JSON.parse(storedTransactions) : [];
+    } catch (error) {
+        console.error("Error cargando transacciones:", error);
+        transactions = [];
+        localStorage.removeItem("transactions");
+    }
     updateView(); // Actualiza la vista al cargar transacciones
 }
 
 // Delegación de eventos para eliminar transacciones
-transactionsTableBody.addEventListener("click", function (e) {
+transactionsTableBody?.addEventListener("click", function (e) {
     if (e.target.classList.contains("delete-btn")) {
         const transactionId = parseInt(e.target.getAttribute("data-id"));
         deleteTransactionById(transactionId);
@@ -167,5 +191,5 @@ transactionsTableBody.addEventListener("click", function (e) {
 document.addEventListener("DOMContentLoaded", () => {
     initializeChart();
     loadTransactions(); // Carga las transacciones del localStorage y actualiza la vista
-    transactionForm.addEventListener("submit", addTransaction); // Añade la transacción al enviar el formulario
+    transactionForm?.addEventListener("submit", addTransaction); // Añade la transacción al enviar el formulario
 });
