@@ -141,3 +141,4 @@ document.addEventListener("DOMContentLoaded", () => {
     loadTransactions(); // Carga las transacciones del localStorage y actualiza la vista
     transactionForm.addEventListener("submit", addTransaction); // Añade la transacción al enviar el formulario
 });
+
