@@ -1,25 +1,201 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gestor de Transacciones</title>
-  <link rel="stylesheet" href="css/styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Registro de transacciones">
+    <title>Gestor de transacciones</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" 
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" 
+    crossorigin="anonymous">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="icon" href="img/icono.ico" />
+    <link rel="stylesheet" href="css/main.css"/>
 </head>
 <body>
-  <header>
-    <h1>Gestor de Transacciones</h1>
-  </header>
-  <main>
-    <section id="transactions">
-      <h2>Listado de Transacciones</h2>
-      <ul id="transaction-list"></ul>
-    </section>
-  </main>
+    <div class="container">
+        <div class="h2 pb-2 mb-4 text-center border-bottom border-info mt-3 md-3">
+            Gestor de transacciones
+          </div>
+        <div class="md-5">
+            <div class="row">
+                <div class="form-group col-md-6 mb-3">
+                    <label for="name">Artículo</label>
+                    <input type="text" name="articulo" class="form-control" 
+                    id="articulo" placeholder="Ingresa nombre del artículo">
+                </div>
+                <div class="form-group col-md-6 mb-3">
+                    <label for="name">Cantidad</label>
+                    <input type="number" name="cantidad" class="form-control" 
+                    id="cantidad" value="0">
+                </div>
+                <div class="form-group col-md-6 mb-3">
+                    <label for="name">Precio</label>
+                    <input type="text" name="precio" class="form-control" 
+                    id="precio" value="0" oninput="formatInputPrice(this)">                    
+                </div>
+                <div class="form-group col-md-6 mb-3">
+                    <label for="name">Proveedor</label>
+                    <input type="text" name="proveedor" class="form-control" 
+                    id="proveedor" placeholder="Ingresa nombre del proveedor">
+                </div>
+                <div class="form-group col-md-6 mb-3">
+                    <label for="name">Duración</label>
+                    <input type="text" name="duracion" class="form-control" 
+                    id="duracion">
+                </div>
+                <div class="form-group col-md-6 mb-3">
+                    <label for="categoria">Categoría</label>
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle custom-dropdown-button" type="button" id="dropdownCategoria" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-menu-up"></i> Seleccionar Categoría
+                        </button>
+                        <ul class="dropdown-menu multi-column-dropdown" aria-labelledby="dropdownCategoria">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <li><a class="dropdown-item custom-dropdown-item" href="#" onclick="selectCategoria('Actividades externas')">Actividades externas</a></li>
+                                    <li><a class="dropdown-item custom-dropdown-item" href="#" onclick="selectCategoria('Actividades internas')">Actividades internas</a></li>
+                                    <li><a class="dropdown-item custom-dropdown-item" href="#" onclick="selectCategoria('Agua')">Agua</a></li>
+                                    <li><a class="dropdown-item custom-dropdown-item" href="#" onclick="selectCategoria('Aseo')">Aseo</a></li>
+                                    <li><a class="dropdown-item custom-dropdown-item" href="#" onclick="selectCategoria('Asesoria')">Asesoria</a></li>
+                                    <li><a class="dropdown-item custom-dropdown-item" href="#" onclick="selectCategoria('Asesoria')">Asesoria</a></li>
+                                    <li><a class="dropdown-item custom-dropdown-item" href="#" onclick="selectCategoria('Auditoria')">Auditoria</a></li>
+                                    <li><a class="dropdown-item custom-dropdown-item" href="#" onclick="selectCategoria('B. permanencia')">B. permanencia</a></li>
+                                    <li><a class="dropdown-item custom-dropdown-item" href="#" onclick="selectCategoria('Beneficio escolar')">Beneficio escolar</a></li>
+                                    <li><a class="dropdown-item custom-dropdown-item" href="#" onclick="selectCategoria('Capacitación')">Capacitación</a></li>
+                                    <li><a class="dropdown-item custom-dropdown-item" href="#" onclick="selectCategoria('Capital humano')">Capital humano</a></li>
+                                    <li><a class="dropdown-item custom-dropdown-item" href="#" onclick="selectCategoria('Comercial')">Comercial</a></li>
+                                    <li><a class="dropdown-item custom-dropdown-item" href="#" onclick="selectCategoria('Computacion')">Computacion</a></li>
+                                    <li><a class="dropdown-item custom-dropdown-item" href="#" onclick="selectCategoria('Convenios')">Convenios</a></li>
+                                    <li><a class="dropdown-item custom-dropdown-item" href="#" onclick="selectCategoria('Dicom')">Dicom</a></li>
+                                    <li><a class="dropdown-item custom-dropdown-item" href="#" onclick="selectCategoria('Diseñador grafico')">Diseñador grafico</a></li>
+                                    <li><a class="dropdown-item custom-dropdown-item" href="#" onclick="selectCategoria('Encomiendas')">Encomiendas</a></li>
+                                    <li><a class="dropdown-item custom-dropdown-item" href="#" onclick="selectCategoria('Equipos computacionales')">Equipos computacionales</a></li>
+                                    <li><a class="dropdown-item custom-dropdown-item" href="#" onclick="selectCategoria('Gastos de materiales y útiles de oficina')">Gastos de materiales y útiles de oficina</a></li>
+                                    <li><a class="dropdown-item custom-dropdown-item" href="#" onclick="selectCategoria('Gastos legales - notariales y asesorias')">Gastos legales - notariales y asesorias</a></li>
+                                    <li><a class="dropdown-item custom-dropdown-item" href="#" onclick="selectCategoria('Guardia de seguridad')">Guardia de seguridad</a></li>
+                                    <li><a class="dropdown-item custom-dropdown-item" href="#" onclick="selectCategoria('Imagen')">Imagen</a></li>
+                                    <li><a class="dropdown-item custom-dropdown-item" href="#" onclick="selectCategoria('Imprenta encuadernacion')">Imprenta encuadernacion</a></li>
+                                    <li><a class="dropdown-item custom-dropdown-item" href="#" onclick="selectCategoria('Informatica y certificados')">Informatica y certificados</a></li>
+                                    <li><a class="dropdown-item custom-dropdown-item" href="#" onclick="selectCategoria('Leyes sociales')">Leyes sociales</a></li>
+                                    <li><a class="dropdown-item custom-dropdown-item" href="#" onclick="selectCategoria('Luz')">Luz</a></li>
+                                </div>
+                                <div class="col-sm-6">
+                                    <li><a class="dropdown-item custom-dropdown-item" href="#" onclick="selectCategoria('Mantencion y gastos menores de equipos computacionales')">Mantencion y gastos menores de equipos computacionales</a></li>
+                                    <li><a class="dropdown-item custom-dropdown-item" href="#" onclick="selectCategoria('Memorias')">Memorias</a></li>
+                                    <li><a class="dropdown-item custom-dropdown-item" href="#" onclick="selectCategoria('Mensajeria masivo')">Mensajeria masivo</a></li>
+                                    <li><a class="dropdown-item custom-dropdown-item" href="#" onclick="selectCategoria('Monitores')">Monitores</a></li>
+                                    <li><a class="dropdown-item custom-dropdown-item" href="#" onclick="selectCategoria('Muebles y enseres')">Muebles y enseres</a></li>
+                                    <li><a class="dropdown-item custom-dropdown-item" href="#" onclick="selectCategoria('Otros activos fijos')">Otros activos fijos</a></li>
+                                    <li><a class="dropdown-item custom-dropdown-item" href="#" onclick="selectCategoria('Pagina web')">Pagina web</a></li>
+                                    <li><a class="dropdown-item custom-dropdown-item" href="#" onclick="selectCategoria('Proveedores')">Proveedores</a></li>
+                                    <li><a class="dropdown-item custom-dropdown-item" href="#" onclick="selectCategoria('Publicidad')">Publicidad</a></li>
+                                    <li><a class="dropdown-item custom-dropdown-item" href="#" onclick="selectCategoria('Remuneraciones')">Remuneraciones</a></li>
+                                    <li><a class="dropdown-item custom-dropdown-item" href="#" onclick="selectCategoria('Reparaciones menores')">Reparaciones menores</a></li>
+                                    <li><a class="dropdown-item custom-dropdown-item" href="#" onclick="selectCategoria('Seguridad')">Seguridad</a></li>
+                                    <li><a class="dropdown-item custom-dropdown-item" href="#" onclick="selectCategoria('Seguros')">Seguros</a></li>
+                                    <li><a class="dropdown-item custom-dropdown-item" href="#" onclick="selectCategoria('Software')">Software</a></li>
+                                    <li><a class="dropdown-item custom-dropdown-item" href="#" onclick="selectCategoria('Soporte desarrollo erp')">Soporte desarrollo erp</a></li>
+                                    <li><a class="dropdown-item custom-dropdown-item" href="#" onclick="selectCategoria('Telefonia')">Telefonia</a></li>
+                                    <li><a class="dropdown-item custom-dropdown-item" href="#" onclick="selectCategoria('Trabajos varios estructura')">Trabajos varios estructura</a></li>
+                                    <li><a class="dropdown-item custom-dropdown-item" href="#" onclick="selectCategoria('Uniforme')">Uniforme</a></li>
+                                    <li><a class="dropdown-item custom-dropdown-item" href="#" onclick="selectCategoria('Utiles de aseo y oficina')">Utiles de aseo y oficina</a></li>
+                                    <li><a class="dropdown-item custom-dropdown-item" href="#" onclick="selectCategoria('Vacaciones')">Vacaciones</a></li>
+                                    <li><a class="dropdown-item custom-dropdown-item" href="#" onclick="selectCategoria('Viaticos y pasajes')">Viaticos y pasajes</a></li>
+                                    <li><a class="dropdown-item custom-dropdown-item" href="#" onclick="selectCategoria('Wifi - internet')">Wifi - internet</a></li>
+                                    <li><a class="dropdown-item custom-dropdown-item" href="#" onclick="selectCategoria('Otro')">Otro</a></li>
+                                </div>
+                            </div>
+                        </ul>                                                                                      
+                    </div>
+                </div>
+                <input type="hidden" name="categoria" id="categoria">
 
-  <script type="module" src="js/app.js"></script>
-  <script type="module" src="js/budget.js"></script>
-  <script type="module" src="js/transaction.js"></script>
-  <script type="module" src="js/datetime.js"></script>
+                <div class="col-lg-12 d-flex justify-content-between align-items-center">
+                    <button class="btn btn-success" id="Submit" onclick="AddData()">
+                        <i class="bi bi-file-plus"></i> Añadir Registro
+                    </button>
+                    <div>
+                        <button class="btn btn-primary" id="Update">
+                        <i class="bi bi-arrow-clockwise"></i> Actualizar
+                        </button>
+                    </div>
+                    <div class="btn-group d-flex justify-content-end mt-3" role="group" aria-label="Controles graficos">
+                        <a href="balance.html" class="btn btn-success"><i class="bi bi-bar-chart"></i> Ver Balance</a>
+                        <a href="dashboard.html" class="btn btn-primary"><i class="bi bi-bar-chart"></i> Estadísticas</a>
+                      </div>
+
+                </div>
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle custom-dropdown-button" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-sliders2"></i> Opciones
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <li><a class="dropdown-item custom-dropdown-item" href="#" onclick="exportToExcel()"><i class="bi bi-file-earmark-spreadsheet"></i> Exportar a Excel</a></li>
+                        <li><a class="dropdown-item custom-dropdown-item" href="#" onclick="exportToJSON()"><i class="bi bi-arrow-down"></i> Guardar respaldo</a></li>
+                        <li><a class="dropdown-item custom-dropdown-item" href="#" onclick="document.getElementById('fileInput').click()"><i class="bi bi-arrow-up"></i> Cargar un respaldo</a></li>
+                    </ul>
+                </div>
+                <div class="toast-container position-fixed bottom-0 end-0 p-3">
+                    <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                        <div class="toast-header">
+                            <img src="img/icono.ico" class="rounded me-2" width="20" height="20">
+                            <strong class="me-auto"></strong>
+                            <small>Ahora</small>
+                            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </div>
+                        <div class="toast-body"></div>
+                    </div>
+                </div>
+                <input type="file" id="fileInput" class="d-none" onchange="importFromJSON(event)">                             
+                <div class="form-group col-md-6 mb-3">
+                    <input type="number" name="total" class="form-control" 
+                    id="total">
+                </div>
+            </div>
+        </div>
+        <hr class="border border-light border-2 opacity-40">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="input-group mt-2">
+                    <input type="text" class="form-control" placeholder="Buscar una transacción por nombre o proveedor" aria-label="Search" aria-describedby="search-addon" id="searchInput"/>
+                    <button onclick="searchData()" class="btn btn-success">Buscar</button>
+                </div>
+            <div class="table-responsive">
+                <table class="table table-dark table-hover" id="crudTable">
+                    <thead>
+                        <br>
+                        <tr class="table table-dark table-hover">
+                            <th class="titles">Artículo</th>
+                            <th class="titles">Cantidad</th>
+                            <th class="titles">Precio</th>
+                            <th class="titles">Proveedor</th>
+                            <th class="titles">Categoría</th>
+                            <th class="titles">Duración</th>
+                            <th class="titles">Total</th>
+                            <th class="titles">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+                <div id="totalSumContainer" class="total-sum-container">
+                    Suma total: <span id="totalSum">0</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="pagination" class="pagination justify-content-center gap-1 pt-3 mt-3"></div>
+    <br>
+    <footer>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" 
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" 
+    crossorigin="anonymous"></script>
+    <script src="js/script.js"></script>
 </body>
 </html>
