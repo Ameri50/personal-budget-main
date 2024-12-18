@@ -1,17 +1,19 @@
+// Evento que se ejecuta cuando el contenido del DOM está completamente cargado
 document.addEventListener('DOMContentLoaded', (event) => {
     generateCharts();
 
+    // Evento para descargar el gráfico como imagen PNG
     document.getElementById('downloadPNG').addEventListener('click', function() {
         downloadPNG();
     });
 
+    // Evento para descargar el gráfico como archivo PDF
     document.getElementById('downloadPDF').addEventListener('click', function() {
         downloadPDF();
     });
 });
 
-let mostRegisteredCategoryText = '';
-
+// Función principal para generar gráficos
 function generateCharts() {
     var productList = JSON.parse(localStorage.getItem("productList")) || [];
 
@@ -39,6 +41,7 @@ function generateCharts() {
     displayMostRegisteredCategory(labels[maxIndex(countValues)], Math.max(...countValues));
 }
 
+// Función para generar gráficos de tipo Doughnut
 function generateDoughnutChart(chartId, chartLabel, labels, data) {
     var ctx = document.getElementById(chartId).getContext('2d');
     new Chart(ctx, {
@@ -106,6 +109,7 @@ function generateDoughnutChart(chartId, chartLabel, labels, data) {
     });
 }
 
+// Función para generar gráficos de Doughnut con una etiqueta adicional
 function generateDoughnutChartWithLabel(chartId, chartLabel, labels, data, titleText, categoryName, categoryValue) {
     var ctx = document.getElementById(chartId).getContext('2d');
     new Chart(ctx, {
@@ -168,19 +172,23 @@ function generateDoughnutChartWithLabel(chartId, chartLabel, labels, data, title
     });
 }
 
+// Función para encontrar el índice del valor máximo en un arreglo
 function maxIndex(arr) {
     return arr.indexOf(Math.max(...arr));
 }
 
+// Función para encontrar el índice del valor mínimo en un arreglo
 function minIndex(arr) {
     return arr.indexOf(Math.min(...arr));
 }
 
+// Función para mostrar la categoría más registrada
 function displayMostRegisteredCategory(category, value) {
     mostRegisteredCategoryText = `La categoría "${category}" es la que tiene más entradas, con ${value} registros`;
     document.getElementById('mostRegisteredCategory').innerText = mostRegisteredCategoryText;
 }
 
+// Función para generar colores aleatorios
 function generateColors(count) {
     const colors = [];
     for (let i = 0; i < count; i++) {
@@ -190,10 +198,12 @@ function generateColors(count) {
     return colors;
 }
 
+// Función para formatear valores como moneda
 function formatCurrency(value) {
     return new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP' }).format(value);
 }
 
+// Función para descargar los gráficos como PNG
 function downloadPNG() {
     const chartIds = ['averageSpendingChart', 'mostExpensiveCategoryChart', 'leastExpensiveCategoryChart'];
 
@@ -207,7 +217,7 @@ function downloadPNG() {
     });
 }
 
-//Imagina si Adobe ni su formato PDF no existira, la vida sería mejor
+// Función para descargar los gráficos como PDF
 async function downloadPDF() {
     const { jsPDF } = window.jspdf;
     const pdf = new jsPDF('p', 'mm', 'letter');
@@ -251,6 +261,7 @@ async function downloadPDF() {
     pdf.save('gráficos_estadísticos.pdf');
 }
 
+// Función para guardar un archivo como URI
 function saveAs(uri, filename) {
     var link = document.createElement('a');
     if (typeof link.download === 'string') {

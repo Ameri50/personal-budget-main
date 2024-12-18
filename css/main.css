@@ -1,260 +1,175 @@
 body {
-    background-image: url('https://www.fiscal-impuestos.com/sites/fiscal-impuestos.com/files/impuesto-transacciones-financieras_0.jpg'); /* Reemplaza con la ruta de tu imagen */
-    background-size: cover; /* Esto hace que la imagen cubra toda el área */
-    background-position: center center; /* Centra la imagen en la pantalla */
-    background-attachment: fixed; /* Esto hace que la imagen se quede fija mientras se hace scroll */
+    background-image: url('https://www.fiscal-impuestos.com/sites/fiscal-impuestos.com/files/impuesto-transacciones-financieras_0.jpg'); 
+    background-size: cover;
+    background-position: center center;
+    background-attachment: fixed;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
     margin: 0;
-    justify-content: center; /* Centra el contenido verticalmente */
-    align-items: center; /* Centra el contenido horizontalmente */
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(208, 214, 214, 0.7); /* Oscurece un poco el fondo */
+}
+
+.main-container {
+    background: rgba(20, 18, 18, 0.8); /* Fondo semi-transparente */
+    box-shadow: 0px 8px 20px rgba(248, 245, 245, 0.2); /* Sombra */
+    border-radius: 15px; /* Bordes redondeados */
+    padding: 30px;
+    max-width: 1200px;
+    width: 100%;
+    margin: 20px;
+    transition: all 0.3s ease;
 }
 
 .container {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    padding: 10px;
-    margin: 0 auto;
-    border-radius: 10px;
-    background-color: #262425;
-    width: 80%; /* Esto establece el tamaño del contenedor */
-    max-width: 1200px; /* Establece un límite máximo de ancho */
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 20px;
 }
 
-
-footer {
-padding-bottom: 1%;
-text-align: center;
+h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #17a2b8;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
 }
 
-.form-group {
-margin-bottom: 1rem;
+/* Botones */
+button.btn-success {
+    background-color: #28a745;
+    border: none;
+    transition: background-color 0.3s ease;
 }
 
-.form-control {
-padding: 0.75rem;
-border-radius: 5px;
-border: 1px solid #198754;
-transition: border-color 0.3s ease;
+button.btn-success:hover {
+    background-color: #218838;
 }
 
-.form-control:focus {
-border-color: #198754;
-outline: none;
-box-shadow: 0 0 8px rgba(25, 135, 84, 0.3);
-}
-.Textcategoria{
-color:#198754;
-font-weight: bold;
+button.btn-primary {
+    background-color: #007bff;
+    border: none;
+    transition: background-color 0.3s ease;
 }
 
-h4.categoria-registros {
-color: gray;
+button.btn-primary:hover {
+    background-color: #0069d9;
 }
 
-.table-responsive {
-overflow-x: auto;
+button.btn-secondary {
+    background-color: #6c757d;
+    border: none;
+    transition: background-color 0.3s ease;
 }
 
-.table-responsive table {
-width: 100%;
-max-width: 100%;
-margin-bottom: 0;
+button.btn-secondary:hover {
+    background-color: #5a6268;
 }
 
+/* Inputs y formularios */
+input[type="text"],
+input[type="number"],
+.select-dropdown {
+    background-color: #ffffff;
+    border: 2px solid #ced4da;
+    border-radius: 0.25rem;
+    transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus {
+    border-color: #17a2b8;
+    box-shadow: 0 0 5px rgba(23, 162, 184, 0.5);
+}
+
+label {
+    font-weight: 500;
+    color: #495057;
+}
+
+/* Estilo para el contenedor de transacciones */
 .container {
-box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-padding: 10px;
-/*max-width: 1000px;*/ /*para alterar el tamaño del container*/
-/*width: 100%;*/
-margin: 0 auto;
-border-radius: 10px;
-background-color: #262425;
+    padding: 2rem;
+    margin-top: 20px;
+    background-color: #ffffff;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 }
 
-.pagination{
-margin-top: 5px;
+/* Tablas */
+table.table-dark {
+    background-color: #343a40;
+    border-radius: 0.5rem;
+    overflow: hidden;
 }
 
-.button, .form-control, .dropdown-item {
-transition: all 0.2s ease-in-out;
+table.table-dark th {
+    color: #ffffff;
+    background-color: #495057;
 }
 
-.button:hover, .form-control:focus, .dropdown-item:hover {
-transform: scale(1.01);
+table.table-dark tbody tr:hover {
+    background-color: #495057;
+    color: #ffffff;
 }
 
-
-.table {
-background-color: #242526;
-border-radius: 10px;
-overflow: hidden;
+table.table-dark td {
+    color: #adb5bd;
 }
 
-.btn {
-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-transition: box-shadow 0.3s ease;
+.total-sum-container {
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: #17a2b8;
 }
 
-.btn:hover {
-box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
-}
-
-
-.multi-column-dropdown {
-column-count: 1;
-column-gap: 2rem;
-}
-
-.dropdown-item.custom-dropdown-item {
-font-size: 0.85rem; 
-text-transform: capitalize;
-text-wrap: inherit;
-}
-
-
-*{
-color: #fff;
-font-size: 14px;
-}
-
-.total-sum-container{
-text-align: end;
-font-size: medium;
-padding-bottom: 2%;
-font-weight: bold;
-}
-
-#Update{
-display: none;
-}
-
-.titles {
-text-align: center;
-color: #fff;
-}
-
-#searchInput{
-display: flex;
-text-align: left;
-color: black;
-}
-
-#total{
-display: none;
-}
-
-.nav-link{
-color: crimson;
-}
-
-.border {
-border-width: 2px !important;
-}
-
-
-.dropdown{
-margin: 2px;
-}
-
-.table th, .table td {
-text-align: center; 
-vertical-align: middle; 
-}
-
-.custom-dropdown-button {
-background-color: #6c757d;
-border: none; 
-border-radius: 5px; 
-
-transition: background-color 0.3s ease; 
-color: #fff;
-}
-
-.custom-dropdown-button:hover {
-background-color: #198754; 
-}
-
-.custom-dropdown-item {
-transition: background-color 0.3s ease; 
-color: #fff;
-}
-
-.custom-dropdown-item:hover {
-background-color: #198754; 
-color: #fff; 
-}
-
+/* Estilo del dropdown */
 .dropdown-menu {
-background-color: #343a40; 
-border-radius: 5px; 
-border: none; 
-box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    background-color: #ffffff;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
 }
 
-.toast-container {
-z-index: 1100;
+.dropdown-item {
+    color: #343a40;
+    transition: background-color 0.3s ease;
 }
 
-#liveToast {
-background-color: #343a40;
-border-radius: 10px;
-box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+.dropdown-item:hover {
+    background-color: #17a2b8;
+    color: #ffffff;
 }
 
-#liveToast .toast-header {
-background-color: #2c3136;
-border-bottom: 1px solid #495057;
-color: #f8f9fa;
+/* Paginas */
+.pagination {
+    background-color: transparent;
 }
 
-#liveToast .toast-header strong {
-color: #e9ecef;
+.pagination .page-link {
+    color: #007bff;
 }
 
-#liveToast .toast-header small {
-color: #adb5bd;
+.pagination .page-link:hover {
+    color: #0056b3;
+    background-color: #f8f9fa;
+    border-color: #007bff;
 }
 
-#liveToast .btn-close {
-font-size: 0.875rem;
-filter: invert(1) grayscale(100%) brightness(200%);
+.pagination .page-item.active .page-link {
+    background-color: #007bff;
+    border-color: #007bff;
 }
 
-#liveToast .toast-body {
-color: #f8f9fa;
-padding: 12px;
+/* Toast (notificaciones) */
+.toast-header {
+    background-color: #17a2b8;
+    color: #ffffff;
 }
 
-.toast.success {
-background-color: #d4edda;
-border-color: #c3e6cb;
-color: #155724;
+.toast-body {
+    background-color: #ffffff;
+    color: #343a40;
 }
 
-.toast.danger {
-background-color: #f8d7da;
-border-color: #f5c6cb;
-color: #721c24;
-}
-
-.toast.info {
-background-color: #d1ecf1;
-border-color: #bee5eb;
-color: #0c5460;
-}
-
-.toast.success .toast-header {
-background-color: #c3e6cb;
-color: #155724;
-}
-
-.toast.danger .toast-header {
-background-color: #f5c6cb;
-color: #721c24;
-}
-
-.toast.info .toast-header {
-background-color: #bee5eb;
-color: #0c5460;
-}
